@@ -1,45 +1,44 @@
 # Composer_codeigniter
 membership and user listing system with PHP. The system contains 2 parts. First part is backend, and second part is front-end. These parts communicate over REST API. Front-end and back-end must be isolated from each other.
 
-# application\controllers
+# application/controllers/API
 
-public function index()
-    {
-        //get json object
-        $input=(json_decode(file_get_contents("php://input")));
-        //get the right form of my json object "{action:"",data:""}"
-        try
-        {
-            if(empty($input->action))
-            {throw new Exception('json object error');}
-        }
-        catch (Exception $e)
-        {
-            print_r($e->getMessage());
-            die();
-        }
-        //switching between the types of the apis
-        switch ($input->action){
-            //login
-            case 'login':
-                $response=$this->login($input->data);
-                break;
-             //logout
-            case 'logout':
-                $member_id=$this->check_API_key();
-                $response=$this->logout($member_id);
-                break;
-            //user_list
-            case 'user_list':
-                $member_id=$this->check_API_key();
-                $response=$this->user_list();
-                break;
-            //user_get
-            case 'user_get':
-                $member_id=$this->check_API_key();
-                $response=$this->user_get($input->data);
-                break;
-
+             public function index()
+                {
+                    //get json object
+                    $input=(json_decode(file_get_contents("php://input")));
+                    //get the right form of my json object "{action:"",data:""}"
+                    try
+                    {
+                        if(empty($input->action))
+                        {throw new Exception('json object error');}
+                    }
+                    catch (Exception $e)
+                    {
+                        print_r($e->getMessage());
+                        die();
+                    }
+                    //switching between the types of the apis
+                    switch ($input->action){
+                        //login
+                        case 'login':
+                            $response=$this->login($input->data);
+                            break;
+                         //logout
+                        case 'logout':
+                            $member_id=$this->check_API_key();
+                            $response=$this->logout($member_id);
+                            break;
+                        //user_list
+                        case 'user_list':
+                            $member_id=$this->check_API_key();
+                            $response=$this->user_list();
+                            break;
+                        //user_get
+                        case 'user_get':
+                            $member_id=$this->check_API_key();
+                            $response=$this->user_get($input->data);
+                            break;
             default:
                 $e=new Exception('so such action error');
                 print_r($e->getMessage());
